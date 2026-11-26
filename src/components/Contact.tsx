@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, m } from 'framer-motion'
-import { AlertCircle, ArrowRight, CheckCircle2, Mail, MapPin } from 'lucide-react'
+import { AlertCircle, ArrowRight, CheckCircle2, Loader2, Mail, MapPin } from 'lucide-react'
 import Magnetic from './Magnetic'
 import { GithubIcon, InstagramIcon, TelegramIcon } from './Icons'
 import { profile } from '../data/content'
@@ -24,6 +24,8 @@ export default function Contact() {
   const [errors, setErrors] = useState<Errors>({})
   const [touched, setTouched] = useState(false)
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
+  const [sending, setSending] = useState(false)
+  const [trap, setTrap] = useState('')
 
   const set = (k: keyof typeof values) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const next = { ...values, [k]: e.target.value }
@@ -31,12 +33,10 @@ export default function Contact() {
     if (touched) setErrors(validate(next))
   }
 
-  /**
-   * There is no backend, so the form hands the message to a real channel:
-   * email (if configured) or Telegram, after copying the text to the clipboard.
-   */
+  /** Sends the message to /api/contact, which forwards it to Jonibek's Telegram bot. */
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (sending) return
     setTouched(true)
     const errs = validate(values)
     setErrors(errs)
@@ -44,18 +44,27 @@ export default function Contact() {
       setStatus({ kind: 'error', text: 'Please fix the highlighted fields.' })
       return
     }
-    const body = `Hi Jonibek! I'm ${values.name.trim()} (${values.email.trim()}).\n\n${values.message.trim()}`
-    if (profile.email) {
-      window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent('New project inquiry')}&body=${encodeURIComponent(body)}`
-      setStatus({ kind: 'ok', text: 'Your email app is opening with the message ready to send.' })
-      return
-    }
+    setSending(true)
+    setStatus({ kind: 'idle' })
     try {
-      await navigator.clipboard.writeText(body)
-      window.open(profile.telegram, '_blank', 'noopener')
-      setStatus({ kind: 'ok', text: 'Message copied. Paste it into the Telegram chat that just opened and press send.' })
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...values, website: trap }),
+      })
+      const data = (await res.json().catch(() => ({}))) as { error?: string }
+      if (res.ok) {
+        setStatus({ kind: 'ok', text: "Message sent! I'll get back to you soon." })
+        setValues({ name: '', email: '', message: '' })
+        setTouched(false)
+        setErrors({})
+      } else {
+        setStatus({ kind: 'error', text: `${data.error ?? 'Something went wrong.'} You can also reach me on Telegram: @${profile.telegramUser}.` })
+      }
     } catch {
-      setStatus({ kind: 'error', text: `Couldn't copy the message. Please write to me directly on Telegram: @${profile.telegramUser}.` })
+      setStatus({ kind: 'error', text: `No connection. Please check your internet or write on Telegram: @${profile.telegramUser}.` })
+    } finally {
+      setSending(false)
     }
   }
 
@@ -143,6 +152,17 @@ export default function Contact() {
           transition={{ duration: 1, ease }}
         >
           <div className="relative z-[2] grid gap-5">
+            {/* Honeypot for spam bots: hidden from people and screen readers. */}
+            <input
+              type="text"
+              name="website"
+              value={trap}
+              onChange={(e) => setTrap(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="absolute -left-[9999px] h-0 w-0 opacity-0"
+            />
             <div className="grid gap-5 sm:grid-cols-2">
               {field('name', 'Your name')}
               {field('email', 'Your email', 'email')}
@@ -150,9 +170,15 @@ export default function Contact() {
             {field('message', 'Tell me about your project')}
             <div className="flex flex-wrap items-center gap-4">
               <Magnetic>
-                <button type="submit" className="btn btn-red">Send message <ArrowRight /></button>
+                <button type="submit" disabled={sending} aria-busy={sending} className="btn btn-red">
+                  {sending ? (
+                    <>Sending <Loader2 className="animate-spin" /></>
+                  ) : (
+                    <>Send message <ArrowRight /></>
+                  )}
+                </button>
               </Magnetic>
-              <p className="text-xs text-gray">{profile.email ? 'Opens your email app.' : 'Sends via Telegram.'}</p>
+              <p className="text-xs text-gray">Goes straight to my Telegram.</p>
             </div>
             <div aria-live="polite" className="min-h-[24px]">
               <AnimatePresence mode="wait">

@@ -6,6 +6,7 @@ import ProjectModal from './ProjectModal'
 import { GithubIcon } from './Icons'
 import { projects, profile, type Project } from '../data/content'
 import { useI18n } from '../i18n'
+import { ScrambleText, SectionReveal } from './Effects'
 import { ease, gsap, prefersReducedMotion } from '../lib/motion'
 
 export function BotPreview({ big = false }: { big?: boolean }) {
@@ -130,10 +131,11 @@ export default function Projects({ ready }: { ready: boolean }) {
 
   return (
     <section ref={root} id="projects" data-bg="#0b0303" aria-labelledby="projects-title" className="relative overflow-hidden py-28 lg:flex lg:h-[100svh] lg:items-center lg:py-0">
+      <SectionReveal />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(255,32,32,.12),transparent_60%)]" />
       <div ref={track} className="pad-x relative flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-12 lg:pr-[12vw]">
         <div className="shrink-0 lg:w-[min(34vw,520px)]">
-          <m.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker">{pt.kicker}</m.span>
+          <m.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker"><ScrambleText text={pt.kicker} /></m.span>
           <m.h2 id="projects-title" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, ease, delay: 0.1 }} className="h2 mt-5">
             {pt.t1}<br />{pt.t2} <span className="text-neon text-glow">{pt.t2a}</span>
           </m.h2>

@@ -4,6 +4,7 @@ import { Code2, Flag, MapPin, Sparkles, User } from 'lucide-react'
 import TiltCard from './TiltCard'
 import { profile } from '../data/content'
 import { useI18n } from '../i18n'
+import { ScrambleText, SectionReveal } from './Effects'
 import { ease, gsap } from '../lib/motion'
 
 const infoIcons = { name: User, role: Code2, country: MapPin, specialty: Sparkles, brand: Flag }
@@ -45,13 +46,14 @@ export default function About() {
 
   return (
     <section ref={root} id="about" data-bg="#090909" aria-labelledby="about-title" className="pad-x relative overflow-hidden py-28 lg:py-40">
+      <SectionReveal />
       <div data-about-word aria-hidden="true" className="outline-text pointer-events-none absolute top-10 left-0 font-display text-[18vw] leading-none font-black whitespace-nowrap select-none">
         ABOUT ME · ABOUT ME
       </div>
 
       <div className="relative mx-auto grid max-w-[1440px] items-center gap-14 lg:grid-cols-[1.05fr_1fr_.8fr]">
         <div>
-          <m.span {...reveal} transition={{ duration: 0.8, ease }} className="kicker">{a.kicker}</m.span>
+          <m.span {...reveal} transition={{ duration: 0.8, ease }} className="kicker"><ScrambleText text={a.kicker} /></m.span>
           <m.h2 id="about-title" {...reveal} transition={{ duration: 0.9, ease, delay: 0.1 }} className="h2 mt-5">
             {a.t1}<br />{a.t2} <span className="text-neon text-glow">{a.t2a}</span>
           </m.h2>

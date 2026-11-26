@@ -4,6 +4,7 @@ import TiltCard from './TiltCard'
 import { techIcons } from './Icons'
 import { skills } from '../data/content'
 import { useI18n } from '../i18n'
+import { ScrambleText, SectionReveal } from './Effects'
 import { ease, gsap } from '../lib/motion'
 
 export default function Skills() {
@@ -24,6 +25,7 @@ export default function Skills() {
 
   return (
     <section ref={root} id="skills" data-bg="#050505" aria-labelledby="skills-title" className="relative overflow-hidden py-28 lg:py-40">
+      <SectionReveal />
       {/* floating technology wall */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 flex flex-col justify-center gap-10 opacity-[.07] [mask-image:linear-gradient(90deg,transparent,#000_20%,#000_80%,transparent)]">
         {[0, 1].map((row) => (
@@ -43,7 +45,7 @@ export default function Skills() {
       <div className="pad-x relative mx-auto max-w-[1440px]">
         <div className="mb-14 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <span className="kicker">{s.kicker}</span>
+            <span className="kicker"><ScrambleText text={s.kicker} /></span>
             <h2 id="skills-title" className="h2 mt-5">
               <span data-skill-l className="block">{s.t1}</span>
               <span data-skill-r className="block">{s.t2} <span className="text-neon text-glow">{s.t2a}</span></span>

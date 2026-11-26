@@ -7,7 +7,8 @@ import WorkspaceFallback from './WorkspaceFallback'
 import { GithubIcon, TelegramIcon } from './Icons'
 import { profile } from '../data/content'
 import { useI18n } from '../i18n'
-import { canRender3D, ease, gsap, scrollToId } from '../lib/motion'
+import { canRender3D, ease, gsap, prefersReducedMotion, scrollToId } from '../lib/motion'
+import { ScrambleText } from './Effects'
 
 const Workspace3D = lazy(() => import('./Workspace3D'))
 
@@ -22,6 +23,13 @@ export default function Hero({ ready }: { ready: boolean }) {
   const root = useRef<HTMLElement>(null)
   const [use3D] = useState(canRender3D)
   const { t } = useI18n()
+  // Start the periodic glitch once the letter-by-letter intro has finished.
+  const [glitch, setGlitch] = useState(false)
+  useEffect(() => {
+    if (!ready || prefersReducedMotion()) return
+    const id = window.setTimeout(() => setGlitch(true), 1900)
+    return () => clearTimeout(id)
+  }, [ready])
   const up = (d: number) => ({
     initial: { opacity: 0, y: 30, filter: 'blur(6px)' },
     animate: ready ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {},
@@ -77,11 +85,13 @@ export default function Hero({ ready }: { ready: boolean }) {
           </m.div>
 
           <m.p {...up(0.25)} className="mt-7 font-display text-lg font-bold tracking-[.08em] text-white/90 sm:text-xl">
-            {t.hero.hello}
+            <ScrambleText text={t.hero.hello} play={ready} delay={0.35} />
           </m.p>
 
           <h1 className="mt-1 font-display text-[clamp(76px,10.5vw,190px)] leading-[.82] font-black italic tracking-[-.04em] text-neon text-glow">
-            <SplitText text="RANGER" delay={0.45} stagger={0.06} play={ready} />
+            <span className={`glitch ${glitch ? 'is-live' : ''}`} data-text="RANGER">
+              <SplitText text="RANGER" delay={0.45} stagger={0.06} play={ready} />
+            </span>
           </h1>
 
           <m.p {...up(0.9)} className="mt-6 font-display text-base font-bold tracking-[.12em] text-white sm:text-lg">

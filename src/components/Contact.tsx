@@ -6,6 +6,7 @@ import { GithubIcon, InstagramIcon, TelegramIcon } from './Icons'
 import { profile } from '../data/content'
 import { ease } from '../lib/motion'
 import { useI18n } from '../i18n'
+import { ScrambleText, SectionReveal } from './Effects'
 
 type Field = 'name' | 'email' | 'message'
 type ErrKey = 'errName' | 'errEmail' | 'errMessage'
@@ -115,10 +116,11 @@ export default function Contact() {
 
   return (
     <section id="contact" data-bg="#050505" aria-labelledby="contact-title" className="pad-x relative overflow-hidden py-28 lg:py-40">
+      <SectionReveal />
       <div aria-hidden="true" className="pointer-events-none absolute -bottom-40 left-1/2 h-[600px] w-[1100px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(255,32,32,.22),transparent_60%)] blur-2xl" />
       <div className="relative mx-auto grid max-w-[1440px] gap-14 lg:grid-cols-[1fr_1.05fr] lg:items-center">
         <div>
-          <m.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker">{c.kicker}</m.span>
+          <m.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker"><ScrambleText text={c.kicker} /></m.span>
           <h2 id="contact-title" className="mt-6 font-display text-[clamp(40px,6vw,100px)] leading-[.92] font-black tracking-[-.04em] text-white">
             {c.lines.map((line, i) => (
               <span key={i} className="block overflow-hidden pb-1">

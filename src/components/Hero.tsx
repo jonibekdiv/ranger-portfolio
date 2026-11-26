@@ -49,7 +49,7 @@ export default function Hero({ ready }: { ready: boolean }) {
   }, [ready])
 
   return (
-    <section ref={root} id="home" data-bg="#050505" aria-label={t.hero.aria} className="pad-x relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-20">
+    <section ref={root} id="home" data-bg="#050505" aria-label={t.hero.aria} className="pad-x relative flex min-h-[100svh] items-center overflow-hidden pt-20 pb-20 lg:pt-28">
       {/* atmosphere */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute -top-40 -left-40 h-[480px] w-[560px] rounded-full border border-neon/50 bg-[radial-gradient(circle_at_70%_70%,#2a0000,#080000_70%)] shadow-[0_0_80px_rgba(255,32,32,.25)]" />
@@ -78,13 +78,13 @@ export default function Hero({ ready }: { ready: boolean }) {
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-transparent to-black" />
       </div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-[1440px] items-center gap-10 lg:grid-cols-[1fr_1.15fr]">
+      <div className="relative z-10 mx-auto grid w-full max-w-[1440px] items-center gap-2 sm:gap-6 lg:grid-cols-[1fr_1.15fr] lg:gap-10">
         <div data-hero-copy>
           <m.div {...up(0.1)} className="glass inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-bold tracking-[.22em] text-white">
             <span className="pulse-dot" /> {t.hero.badge}
           </m.div>
 
-          <m.p {...up(0.25)} className="mt-7 font-display text-lg font-bold tracking-[.08em] text-white/90 sm:text-xl">
+          <m.p {...up(0.25)} className="mt-5 font-display text-lg font-bold sm:mt-7 tracking-[.08em] text-white/90 sm:text-xl">
             <ScrambleText text={t.hero.hello} play={ready} delay={0.35} />
           </m.p>
 
@@ -121,7 +121,7 @@ export default function Hero({ ready }: { ready: boolean }) {
         </div>
 
         <m.div
-          className="relative h-[min(62vh,620px)] min-h-[340px] w-full"
+          className="relative order-first -mx-4 h-[240px] w-[calc(100%+2rem)] sm:mx-0 sm:h-[340px] sm:w-full lg:order-none lg:h-[min(62vh,620px)] lg:min-h-[340px]"
           initial={{ opacity: 0, scale: 0.94, x: 60 }}
           animate={ready ? { opacity: 1, scale: 1, x: 0 } : {}}
           transition={{ duration: 1.4, ease, delay: 0.35 }}

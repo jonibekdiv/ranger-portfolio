@@ -46,11 +46,11 @@ export default function Stats() {
     { to: 3, label: s.platforms },
   ]
   return (
-    <dl className="relative mx-auto mt-20 grid max-w-[1440px] grid-cols-1 gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/10 sm:grid-cols-3 lg:mt-28">
+    <dl className="relative mx-auto mt-16 grid max-w-[1440px] grid-cols-3 gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/10 lg:mt-28">
       {items.map((it) => (
-        <div key={it.label} className="group relative flex flex-col bg-[#0b0b0b] px-8 py-10 transition-colors duration-500 hover:bg-[#120606]">
-          <dt className="order-2 mt-3 text-sm text-gray">{it.label}</dt>
-          <dd className="font-display text-6xl font-black tracking-tight text-white lg:text-7xl">
+        <div key={it.label} className="group relative flex flex-col bg-[#0b0b0b] px-3 py-6 text-center transition-colors duration-500 hover:bg-[#120606] sm:px-8 sm:py-10 sm:text-left">
+          <dt className="order-2 mt-2 text-[11px] leading-snug text-gray sm:mt-3 sm:text-sm">{it.label}</dt>
+          <dd className="font-display text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl">
             <Counter to={it.to} suffix={it.suffix} />
           </dd>
           <span aria-hidden="true" className="absolute inset-x-8 bottom-0 h-[2px] origin-left scale-x-0 bg-neon shadow-[0_0_12px_#ff2020] transition-transform duration-700 group-hover:scale-x-100" />

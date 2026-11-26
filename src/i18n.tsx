@@ -11,7 +11,7 @@ type ProjectText = { short: string; description: string; features: string[] }
 
 const en = {
   meta: { title: 'Jonibek "Ranger" — Frontend Developer & Creative Web Designer' },
-  nav: { home: 'Home', about: 'About', skills: 'Skills', projects: 'Projects', contact: 'Contact', hire: 'Hire me', open: 'Open menu', close: 'Close menu', top: 'Ranger, back to top', lang: 'Language' },
+  nav: { home: 'Home', about: 'About', skills: 'Skills', projects: 'Projects', process: 'Process', contact: 'Contact', hire: 'Hire me', open: 'Open menu', close: 'Close menu', top: 'Ranger, back to top', lang: 'Language' },
   loader: 'INITIALIZING EXPERIENCE...',
   hero: {
     aria: 'Introduction',
@@ -107,7 +107,7 @@ type Dict = typeof en
 
 const uz: Dict = {
   meta: { title: 'Jonibek "Ranger" — Frontend dasturchi va kreativ veb-dizayner' },
-  nav: { home: 'Bosh sahifa', about: 'Men haqimda', skills: "Ko'nikmalar", projects: 'Loyihalar', contact: 'Aloqa', hire: 'Ishga olish', open: 'Menyuni ochish', close: 'Menyuni yopish', top: 'Ranger, tepaga qaytish', lang: 'Til' },
+  nav: { home: 'Bosh sahifa', about: 'Men haqimda', skills: "Ko'nikmalar", projects: 'Loyihalar', process: 'Jarayon', contact: 'Aloqa', hire: 'Ishga olish', open: 'Menyuni ochish', close: 'Menyuni yopish', top: 'Ranger, tepaga qaytish', lang: 'Til' },
   loader: 'TAYYORLANMOQDA...',
   hero: {
     aria: 'Tanishuv',
@@ -201,7 +201,7 @@ const uz: Dict = {
 
 const ru: Dict = {
   meta: { title: 'Джонибек "Ranger" — фронтенд-разработчик и креативный веб-дизайнер' },
-  nav: { home: 'Главная', about: 'Обо мне', skills: 'Навыки', projects: 'Проекты', contact: 'Контакты', hire: 'Нанять', open: 'Открыть меню', close: 'Закрыть меню', top: 'Ranger, наверх', lang: 'Язык' },
+  nav: { home: 'Главная', about: 'Обо мне', skills: 'Навыки', projects: 'Проекты', process: 'Процесс', contact: 'Контакты', hire: 'Нанять', open: 'Открыть меню', close: 'Закрыть меню', top: 'Ranger, наверх', lang: 'Язык' },
   loader: 'ЗАГРУЗКА...',
   hero: {
     aria: 'Знакомство',

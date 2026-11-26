@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { isSoundOn, onSoundChange, playClick, playHover, setSound } from '../lib/sound'
 import { useI18n } from '../i18n'
+import { isFinePointer } from '../lib/motion'
 
 const INTERACTIVE = 'a, button, [data-cursor], input, textarea'
 
@@ -8,6 +9,7 @@ const INTERACTIVE = 'a, button, [data-cursor], input, textarea'
 export default function SoundToggle() {
   const t = useI18n().t.sound
   const [on, setOn] = useState(isSoundOn)
+  const [fine] = useState(isFinePointer)
 
   useEffect(() => onSoundChange(setOn), [])
 
@@ -28,6 +30,8 @@ export default function SoundToggle() {
     return () => { window.removeEventListener('pointerover', over); window.removeEventListener('pointerdown', down) }
   }, [on])
 
+  // Hover sounds need a mouse; on phones the button would only cover content.
+  if (!fine) return null
   return (
     <button
       type="button"

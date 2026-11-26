@@ -17,7 +17,7 @@ const code = (shift: number) => {
 
 export default function WorkspaceFallback() {
   return (
-    <div className="relative mx-auto aspect-[5/4] w-full max-w-[620px]" aria-hidden="true">
+    <div className="relative mx-auto aspect-[5/4] h-full max-h-[500px] max-w-full" aria-hidden="true">
       <div className="absolute inset-[8%] rounded-full bg-[radial-gradient(ellipse,rgba(255,32,32,.35),transparent_65%)] blur-xl" />
       <svg viewBox="0 0 120 70" className="animate-flicker absolute right-[4%] top-[2%] w-[20%]">
         <path d="M38 12 14 35l24 23M82 12l24 23-24 23M68 6 52 64" fill="none" stroke="#ff2a2a" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 6px #ff2020) drop-shadow(0 0 16px #ff2020)' }} />

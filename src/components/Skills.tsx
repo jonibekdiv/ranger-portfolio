@@ -16,8 +16,10 @@ export default function Skills() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const st = { trigger: root.current, start: 'top 85%', end: 'top 25%', scrub: 1 }
-      gsap.fromTo('[data-skill-l]', { xPercent: -30, opacity: 0 }, { xPercent: 0, opacity: 1, ease: 'none', scrollTrigger: st })
-      gsap.fromTo('[data-skill-r]', { xPercent: 30, opacity: 0 }, { xPercent: 0, opacity: 1, ease: 'none', scrollTrigger: st })
+      // Smaller travel on phones so the heading never slides off-screen.
+      const travel = window.innerWidth < 768 ? 10 : 30
+      gsap.fromTo('[data-skill-l]', { xPercent: -travel, opacity: 0 }, { xPercent: 0, opacity: 1, ease: 'none', scrollTrigger: st })
+      gsap.fromTo('[data-skill-r]', { xPercent: travel, opacity: 0 }, { xPercent: 0, opacity: 1, ease: 'none', scrollTrigger: st })
     }, root)
     return () => ctx.revert()
   }, [])

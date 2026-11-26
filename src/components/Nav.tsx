@@ -9,7 +9,7 @@ import { LANGS, useI18n } from '../i18n'
 function LangSwitch({ className = '' }: { className?: string }) {
   const { lang, setLang, t } = useI18n()
   return (
-    <div role="group" aria-label={t.nav.lang} className={`relative flex rounded-full border border-white/10 bg-white/[.03] p-1 ${className}`}>
+    <div role="group" aria-label={t.nav.lang} className={`relative rounded-full border border-white/10 bg-white/[.03] p-1 ${className || 'flex'}`}>
       {LANGS.map((l) => (
         <button
           key={l.id}
@@ -34,7 +34,7 @@ export default function Nav({ ready }: { ready: boolean }) {
   const [active, setActive] = useState('home')
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const label = (id: string) => t.nav[id as 'home' | 'about' | 'skills' | 'projects' | 'contact']
+  const label = (id: string) => t.nav[id as 'home' | 'about' | 'skills' | 'projects' | 'process' | 'contact']
 
   useEffect(() => {
     const io = new IntersectionObserver(
@@ -99,9 +99,12 @@ export default function Nav({ ready }: { ready: boolean }) {
 
           <div className="flex items-center gap-2">
             <LangSwitch className="hidden sm:flex" />
-            <a href={profile.telegram} target="_blank" rel="noopener" className="btn btn-red btn-sm hidden xl:inline-flex">
-              {t.nav.hire} <ArrowUpRight />
-            </a>
+            {/* Wrapper controls visibility: .btn sets display itself and would override `hidden`. */}
+            <span className="hidden xl:inline-flex">
+              <a href={profile.telegram} target="_blank" rel="noopener" className="btn btn-red btn-sm">
+                {t.nav.hire} <ArrowUpRight />
+              </a>
+            </span>
             <button
               className="relative grid h-11 w-11 place-items-center rounded-full border border-white/10 lg:hidden"
               aria-label={open ? t.nav.close : t.nav.open}

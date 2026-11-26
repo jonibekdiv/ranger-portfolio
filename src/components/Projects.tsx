@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 import { ArrowUpRight, Maximize2 } from 'lucide-react'
 import TiltCard from './TiltCard'
 import ProjectModal from './ProjectModal'
@@ -20,21 +20,21 @@ export function BotPreview({ big = false }: { big?: boolean }) {
           <span className="grid h-8 w-8 place-items-center rounded-full bg-[#2aabee] text-sm">📚</span>
           <span className="font-semibold">Kutubxona24 Bot</span>
         </div>
-        {msgs.map((m, i) => (
-          <motion.div
+        {msgs.map((msg, i) => (
+          <m.div
             key={i}
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 + i * 0.5, duration: 0.5 }}
-            className={`max-w-[85%] whitespace-pre-line rounded-2xl px-3 py-2 text-white ${m.me ? 'justify-self-end rounded-br-sm bg-[#2b5278]' : 'rounded-bl-sm bg-[#1e2c3a]'}`}
+            className={`max-w-[85%] whitespace-pre-line rounded-2xl px-3 py-2 text-white ${msg.me ? 'justify-self-end rounded-br-sm bg-[#2b5278]' : 'rounded-bl-sm bg-[#1e2c3a]'}`}
           >
-            {m.t}
-          </motion.div>
+            {msg.t}
+          </m.div>
         ))}
         <div className="flex w-max gap-1 rounded-2xl bg-[#1e2c3a] px-3 py-2.5">
           {[0, 1, 2].map((d) => (
-            <motion.i key={d} className="block h-1.5 w-1.5 rounded-full bg-[#8aa]" animate={{ y: [0, -4, 0], opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.2, delay: d * 0.2 }} />
+            <m.i key={d} className="block h-1.5 w-1.5 rounded-full bg-[#8aa]" animate={{ y: [0, -4, 0], opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.2, delay: d * 0.2 }} />
           ))}
         </div>
       </div>
@@ -129,10 +129,10 @@ export default function Projects({ ready }: { ready: boolean }) {
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(255,32,32,.12),transparent_60%)]" />
       <div ref={track} className="pad-x relative flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-12 lg:pr-[12vw]">
         <div className="shrink-0 lg:w-[min(34vw,520px)]">
-          <motion.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker">My projects</motion.span>
-          <motion.h2 id="projects-title" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, ease, delay: 0.1 }} className="h2 mt-5">
+          <m.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker">My projects</m.span>
+          <m.h2 id="projects-title" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, ease, delay: 0.1 }} className="h2 mt-5">
             Some Of My<br />Recent <span className="text-neon text-glow">Works</span>
-          </motion.h2>
+          </m.h2>
           <p className="mt-6 max-w-[36ch] text-gray">Selected projects, from esports platforms to 3D stores and Telegram bots. Scroll to explore, click a card for details.</p>
           <a href={`${profile.github}?tab=repositories`} target="_blank" rel="noopener" className="btn btn-ghost btn-sm mt-8">All projects on GitHub <ArrowUpRight /></a>
         </div>

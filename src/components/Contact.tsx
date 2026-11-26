@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 import { AlertCircle, ArrowRight, CheckCircle2, Mail, MapPin } from 'lucide-react'
 import Magnetic from './Magnetic'
 import { GithubIcon, InstagramIcon, TelegramIcon } from './Icons'
@@ -86,7 +86,7 @@ export default function Contact() {
         <label htmlFor={`f-${k}`}>{label}</label>
         <AnimatePresence>
           {err && (
-            <motion.span id={`e-${k}`} className="err" initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>{err}</motion.span>
+            <m.span id={`e-${k}`} className="err" initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>{err}</m.span>
           )}
         </AnimatePresence>
       </div>
@@ -98,11 +98,11 @@ export default function Contact() {
       <div aria-hidden="true" className="pointer-events-none absolute -bottom-40 left-1/2 h-[600px] w-[1100px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(255,32,32,.22),transparent_60%)] blur-2xl" />
       <div className="relative mx-auto grid max-w-[1440px] gap-14 lg:grid-cols-[1fr_1.05fr] lg:items-center">
         <div>
-          <motion.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker">Contact</motion.span>
+          <m.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker">Contact</m.span>
           <h2 id="contact-title" className="mt-6 font-display text-[clamp(44px,6.4vw,104px)] leading-[.9] font-black tracking-[-.04em] text-white">
             {["LET'S BUILD", 'SOMETHING', 'AMAZING.'].map((line, i) => (
               <span key={line} className="block overflow-hidden pb-1">
-                <motion.span
+                <m.span
                   className={`block ${i === 2 ? 'text-neon text-glow italic' : ''}`}
                   initial={{ y: '105%' }}
                   whileInView={{ y: '0%' }}
@@ -110,7 +110,7 @@ export default function Contact() {
                   transition={{ duration: 1, ease, delay: i * 0.1 }}
                 >
                   {line}
-                </motion.span>
+                </m.span>
               </span>
             ))}
           </h2>
@@ -118,12 +118,12 @@ export default function Contact() {
 
           <ul className="mt-10 grid gap-3 sm:grid-cols-2">
             {channels.map(({ href, label, value, Icon }, i) => (
-              <motion.li key={label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease, delay: i * 0.08 }}>
+              <m.li key={label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease, delay: i * 0.08 }}>
                 <a href={href} target="_blank" rel="noopener" className="glass group flex items-center gap-4 rounded-2xl p-4 transition hover:border-neon/50 hover:shadow-[0_0_40px_-10px_rgba(255,32,32,.6)]">
                   <span className="grid h-11 w-11 place-items-center rounded-xl bg-neon/10 text-neon transition group-hover:bg-neon group-hover:text-white"><Icon width={20} height={20} /></span>
                   <span><span className="block text-xs text-gray">{label}</span><span className="font-semibold text-white">{value}</span></span>
                 </a>
-              </motion.li>
+              </m.li>
             ))}
             <li className="glass flex items-center gap-4 rounded-2xl p-4">
               <span className="grid h-11 w-11 place-items-center rounded-xl bg-neon/10 text-neon"><MapPin size={20} /></span>
@@ -132,7 +132,7 @@ export default function Contact() {
           </ul>
         </div>
 
-        <motion.form
+        <m.form
           noValidate
           onSubmit={onSubmit}
           aria-label="Contact form"
@@ -157,7 +157,7 @@ export default function Contact() {
             <div aria-live="polite" className="min-h-[24px]">
               <AnimatePresence mode="wait">
                 {status.kind !== 'idle' && (
-                  <motion.p
+                  <m.p
                     key={status.text}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -166,12 +166,12 @@ export default function Contact() {
                   >
                     {status.kind === 'ok' ? <CheckCircle2 size={18} className="shrink-0" /> : <AlertCircle size={18} className="shrink-0" />}
                     {status.text}
-                  </motion.p>
+                  </m.p>
                 )}
               </AnimatePresence>
             </div>
           </div>
-        </motion.form>
+        </m.form>
       </div>
     </section>
   )

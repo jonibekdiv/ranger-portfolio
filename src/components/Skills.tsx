@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import TiltCard from './TiltCard'
 import { techIcons } from './Icons'
 import { skills } from '../data/content'
@@ -25,7 +25,7 @@ export default function Skills() {
       {/* floating technology wall */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 flex flex-col justify-center gap-10 opacity-[.07] [mask-image:linear-gradient(90deg,transparent,#000_20%,#000_80%,transparent)]">
         {[0, 1].map((row) => (
-          <motion.div
+          <m.div
             key={row}
             className="flex w-max gap-16"
             animate={{ x: row ? ['-50%', '0%'] : ['0%', '-50%'] }}
@@ -34,7 +34,7 @@ export default function Skills() {
             {wall.map((s, i) => (
               <div key={i} className="h-24 w-24 grayscale [&>svg]:h-full [&>svg]:w-full">{techIcons[s.id]}</div>
             ))}
-          </motion.div>
+          </m.div>
         ))}
       </div>
 
@@ -52,7 +52,7 @@ export default function Skills() {
 
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {skills.map((s, i) => (
-            <motion.li
+            <m.li
               key={s.id}
               initial={{ opacity: 0, y: 40, scale: 0.92 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -65,7 +65,7 @@ export default function Skills() {
                 </div>
                 <span className="relative z-[2] font-semibold text-white">{s.name}</span>
               </TiltCard>
-            </motion.li>
+            </m.li>
           ))}
         </ul>
       </div>

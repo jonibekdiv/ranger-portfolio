@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { ArrowRight, Mail } from 'lucide-react'
 import SplitText from './SplitText'
 import Magnetic from './Magnetic'
@@ -41,7 +41,7 @@ export default function Hero({ ready }: { ready: boolean }) {
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1440 900" preserveAspectRatio="none">
           <defs><filter id="hero-blur"><feGaussianBlur stdDeviation="8" /></filter></defs>
           {[{ f: 'url(#hero-blur)', w: 10, o: 0.5 }, { f: undefined, w: 2, o: 1 }].map((p, i) => (
-            <motion.path
+            <m.path
               key={i}
               d="M-40 640 C 320 800, 780 790, 1480 580"
               fill="none"
@@ -63,26 +63,26 @@ export default function Hero({ ready }: { ready: boolean }) {
 
       <div className="relative z-10 mx-auto grid w-full max-w-[1440px] items-center gap-10 lg:grid-cols-[1fr_1.15fr]">
         <div data-hero-copy>
-          <motion.div {...up(0.1)} className="glass inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-bold tracking-[.22em] text-white">
+          <m.div {...up(0.1)} className="glass inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-bold tracking-[.22em] text-white">
             <span className="pulse-dot" /> AVAILABLE FOR PROJECTS
-          </motion.div>
+          </m.div>
 
-          <motion.p {...up(0.25)} className="mt-7 font-display text-lg font-bold tracking-[.08em] text-white/90 sm:text-xl">
+          <m.p {...up(0.25)} className="mt-7 font-display text-lg font-bold tracking-[.08em] text-white/90 sm:text-xl">
             HELLO, I'M JONIBEK.
-          </motion.p>
+          </m.p>
 
           <h1 className="mt-1 font-display text-[clamp(76px,10.5vw,190px)] leading-[.82] font-black italic tracking-[-.04em] text-neon text-glow">
             <SplitText text="RANGER" delay={0.45} stagger={0.06} play={ready} />
           </h1>
 
-          <motion.p {...up(0.9)} className="mt-6 font-display text-base font-bold tracking-[.12em] text-white sm:text-lg">
+          <m.p {...up(0.9)} className="mt-6 font-display text-base font-bold tracking-[.12em] text-white sm:text-lg">
             FRONTEND DEVELOPER <span className="text-neon">&amp;</span> CREATIVE WEB DESIGNER
-          </motion.p>
-          <motion.p {...up(1)} className="mt-3 max-w-[44ch] text-lg leading-relaxed text-gray">
+          </m.p>
+          <m.p {...up(1)} className="mt-3 max-w-[44ch] text-lg leading-relaxed text-gray">
             I build modern, interactive and beautiful digital experiences.
-          </motion.p>
+          </m.p>
 
-          <motion.div {...up(1.1)} className="mt-9 flex flex-wrap gap-4">
+          <m.div {...up(1.1)} className="mt-9 flex flex-wrap gap-4">
             <Magnetic>
               <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToId('projects') }} className="btn btn-red">
                 Explore my work <ArrowRight />
@@ -93,15 +93,15 @@ export default function Hero({ ready }: { ready: boolean }) {
                 Contact me <Mail />
               </a>
             </Magnetic>
-          </motion.div>
+          </m.div>
 
-          <motion.div {...up(1.2)} className="mt-9 flex gap-3">
+          <m.div {...up(1.2)} className="mt-9 flex gap-3">
             <a href={profile.telegram} target="_blank" rel="noopener" aria-label="Telegram" className="icon-btn glass"><TelegramIcon /></a>
             <a href={profile.github} target="_blank" rel="noopener" aria-label="GitHub" className="icon-btn glass"><GithubIcon /></a>
-          </motion.div>
+          </m.div>
         </div>
 
-        <motion.div
+        <m.div
           data-hero-scene
           className="relative h-[min(62vh,620px)] min-h-[340px] w-full"
           initial={{ opacity: 0, scale: 0.94, x: 60 }}
@@ -109,16 +109,19 @@ export default function Hero({ ready }: { ready: boolean }) {
           transition={{ duration: 1.4, ease, delay: 0.35 }}
         >
           {use3D ? (
-            <Suspense fallback={<WorkspaceFallback />}>
-              <Workspace3D />
-            </Suspense>
+            // Mount the WebGL scene only after the first paint so it doesn't compete with the hero text.
+            ready && (
+              <Suspense fallback={null}>
+                <Workspace3D />
+              </Suspense>
+            )
           ) : (
             <div className="flex h-full items-center"><WorkspaceFallback /></div>
           )}
-        </motion.div>
+        </m.div>
       </div>
 
-      <motion.a
+      <m.a
         href="#about"
         onClick={(e) => { e.preventDefault(); scrollToId('about') }}
         aria-label="Scroll to About"
@@ -127,8 +130,8 @@ export default function Hero({ ready }: { ready: boolean }) {
         animate={ready ? { opacity: 1 } : {}}
         transition={{ delay: 1.8 }}
       >
-        <motion.span className="absolute left-1/2 top-2 h-2 w-1 -translate-x-1/2 rounded bg-neon" animate={{ y: [0, 14], opacity: [1, 0] }} transition={{ repeat: Infinity, duration: 1.6 }} />
-      </motion.a>
+        <m.span className="absolute left-1/2 top-2 h-2 w-1 -translate-x-1/2 rounded bg-neon" animate={{ y: [0, 14], opacity: [1, 0] }} transition={{ repeat: Infinity, duration: 1.6 }} />
+      </m.a>
     </section>
   )
 }

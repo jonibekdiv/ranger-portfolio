@@ -1,5 +1,5 @@
 import { useRef, type ReactNode, type HTMLAttributes } from 'react'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { m, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { isFinePointer } from '../lib/motion'
 
 type Props = HTMLAttributes<HTMLDivElement> & { children: ReactNode; max?: number }
@@ -27,7 +27,7 @@ export default function TiltCard({ children, max = 10, className = '', ...rest }
   const reset = () => { px.set(0.5); py.set(0.5) }
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       onPointerMove={onMove}
       onPointerLeave={reset}
@@ -36,6 +36,6 @@ export default function TiltCard({ children, max = 10, className = '', ...rest }
       {...(rest as object)}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }

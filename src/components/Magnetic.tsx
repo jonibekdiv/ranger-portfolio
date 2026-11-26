@@ -1,5 +1,5 @@
 import { useRef, type ReactNode } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { m, useMotionValue, useSpring } from 'framer-motion'
 import { isFinePointer } from '../lib/motion'
 
 /** Wraps a button/link and pulls it towards the pointer. */
@@ -17,8 +17,8 @@ export default function Magnetic({ children, strength = 0.3, className = '' }: {
   const reset = () => { x.set(0); y.set(0) }
 
   return (
-    <motion.div ref={ref} data-magnetic className={`inline-block ${className}`} style={{ x, y }} onPointerMove={onMove} onPointerLeave={reset}>
+    <m.div ref={ref} data-magnetic className={`inline-block ${className}`} style={{ x, y }} onPointerMove={onMove} onPointerLeave={reset}>
       {children}
-    </motion.div>
+    </m.div>
   )
 }

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { ease } from '../lib/motion'
 
 /** Letter-by-letter reveal. Screen readers get the plain text. */
@@ -6,7 +6,7 @@ export default function SplitText({ text, className = '', delay = 0, stagger = 0
   return (
     <span className={`inline-block whitespace-nowrap pb-[0.12em] pr-[0.08em] align-bottom [clip-path:inset(-60%_-30%_0_-30%)] ${className}`} aria-label={text} role="text">
       {[...text].map((ch, i) => (
-        <motion.span
+        <m.span
           key={i}
           aria-hidden="true"
           className="inline-block will-change-transform"
@@ -15,7 +15,7 @@ export default function SplitText({ text, className = '', delay = 0, stagger = 0
           transition={{ duration: 0.9, ease, delay: delay + i * stagger }}
         >
           {ch === ' ' ? ' ' : ch}
-        </motion.span>
+        </m.span>
       ))}
     </span>
   )

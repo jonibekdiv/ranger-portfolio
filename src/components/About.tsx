@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Code2, Flag, MapPin, Sparkles, User } from 'lucide-react'
 import TiltCard from './TiltCard'
 import { profile } from '../data/content'
@@ -47,17 +47,17 @@ export default function About() {
 
       <div className="relative mx-auto grid max-w-[1440px] items-center gap-14 lg:grid-cols-[1.05fr_1fr_.8fr]">
         <div>
-          <motion.span {...reveal} transition={{ duration: 0.8, ease }} className="kicker">About me</motion.span>
-          <motion.h2 id="about-title" {...reveal} transition={{ duration: 0.9, ease, delay: 0.1 }} className="h2 mt-5">
+          <m.span {...reveal} transition={{ duration: 0.8, ease }} className="kicker">About me</m.span>
+          <m.h2 id="about-title" {...reveal} transition={{ duration: 0.9, ease, delay: 0.1 }} className="h2 mt-5">
             Turning Ideas<br />Into <span className="text-neon text-glow">Reality</span>
-          </motion.h2>
-          <motion.p {...reveal} transition={{ duration: 0.9, ease, delay: 0.2 }} className="mt-6 max-w-[46ch] text-lg leading-relaxed text-gray">
+          </m.h2>
+          <m.p {...reveal} transition={{ duration: 0.9, ease, delay: 0.2 }} className="mt-6 max-w-[46ch] text-lg leading-relaxed text-gray">
             I'm Jonibek, a Frontend Developer from Uzbekistan. I enjoy transforming creative ideas into modern digital experiences. I'm constantly learning new technologies and improving my development skills.
-          </motion.p>
+          </m.p>
         </div>
 
         {/* laptop */}
-        <motion.div
+        <m.div
           className="relative mx-auto w-full max-w-[520px]"
           initial={{ opacity: 0, scale: 0.85, rotate: -4 }}
           whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -66,7 +66,7 @@ export default function About() {
           aria-hidden="true"
         >
           <div className="absolute inset-[18%_8%] rounded-full bg-[radial-gradient(ellipse,rgba(255,32,32,.4),transparent_65%)] blur-2xl" />
-          <motion.svg viewBox="0 0 520 380" className="relative w-full" animate={{ y: [0, -12, 0], rotate: [0, -1, 0] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}>
+          <m.svg viewBox="0 0 520 380" className="relative w-full" animate={{ y: [0, -12, 0], rotate: [0, -1, 0] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}>
             <defs>
               <linearGradient id="lt-body" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#5b5b5f" /><stop offset="1" stopColor="#1d1d20" /></linearGradient>
               <linearGradient id="lt-screen" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stopColor="#1a0505" /><stop offset="1" stopColor="#050000" /></linearGradient>
@@ -77,7 +77,7 @@ export default function About() {
             <path d="M158 50 370 70 345 241 129 228z" fill="url(#lt-screen)" />
             <g filter="url(#lt-neon)" fill="none" stroke="#ff2323" strokeWidth="11" strokeLinecap="round" strokeLinejoin="round">
               {['M222 120 190 148l28 30', 'M292 128l30 30-32 28', 'M268 110 242 194'].map((d, i) => (
-                <motion.path key={d} d={d} initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1, ease, delay: 0.5 + i * 0.25 }} />
+                <m.path key={d} d={d} initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1, ease, delay: 0.5 + i * 0.25 }} />
               ))}
             </g>
             <path d="M120 236 352 250 470 302 205 330z" fill="url(#lt-body)" />
@@ -86,13 +86,13 @@ export default function About() {
             <path d="M205 330 470 302 472 308 207 337z" fill="#0d0d0f" />
             <path className="ring" d="M25 230a235 70 0 0 0 470 0" />
             <path className="ring-spark" pathLength={1} d="M25 230a235 70 0 0 0 470 0" />
-          </motion.svg>
+          </m.svg>
           {chips.map((c) => (
             <div key={c.text} data-depth={c.depth} className={`glass absolute ${c.cls} rounded-xl px-3 py-1.5 font-mono text-xs text-[#ffb3b3] shadow-[0_10px_30px_rgba(0,0,0,.5)]`}>
               {c.text}
             </div>
           ))}
-        </motion.div>
+        </m.div>
 
         {/* info cards */}
         <TiltCard max={8} className="glass glow-border is-on relative rounded-3xl p-6">
@@ -105,7 +105,7 @@ export default function About() {
           </div>
           <ul className="relative z-[2] mt-2">
             {info.map(({ icon: Icon, label, value }, i) => (
-              <motion.li
+              <m.li
                 key={label}
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -118,7 +118,7 @@ export default function About() {
                   <p className="text-xs text-gray">{label}</p>
                   <p className="font-semibold text-white">{value}</p>
                 </div>
-              </motion.li>
+              </m.li>
             ))}
           </ul>
         </TiltCard>

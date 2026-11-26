@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { ArrowUpRight, Check, X } from 'lucide-react'
 import { GithubIcon } from './Icons'
 import { BotPreview } from './Projects'
@@ -29,7 +29,7 @@ export default function ProjectModal({ project: p, onClose }: { project: Project
   }, [onClose])
 
   return createPortal(
-    <motion.div
+    <m.div
       className="fixed inset-0 z-[110] grid place-items-center p-3 sm:p-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -37,7 +37,7 @@ export default function ProjectModal({ project: p, onClose }: { project: Project
       transition={{ duration: 0.4 }}
     >
       <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} aria-hidden="true" />
-      <motion.div
+      <m.div
         ref={dialog}
         role="dialog"
         aria-modal="true"
@@ -54,7 +54,7 @@ export default function ProjectModal({ project: p, onClose }: { project: Project
         </button>
         <div className="relative aspect-[16/9] overflow-hidden">
           {p.image ? (
-            <motion.img src={p.image} alt={`Screenshot of ${p.title}`} className="h-full w-full object-cover object-top" initial={{ scale: 1.15 }} animate={{ scale: 1 }} transition={{ duration: 1.2, ease }} />
+            <m.img src={p.image} alt={`Screenshot of ${p.title}`} className="h-full w-full object-cover object-top" initial={{ scale: 1.15 }} animate={{ scale: 1 }} transition={{ duration: 1.2, ease }} />
           ) : (
             <BotPreview big />
           )}
@@ -63,7 +63,7 @@ export default function ProjectModal({ project: p, onClose }: { project: Project
         </div>
 
         <div className="grid gap-10 p-6 sm:p-10 md:grid-cols-[1.4fr_1fr]">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.7, ease }}>
+          <m.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.7, ease }}>
             <p className="text-xs font-bold tracking-[.2em] text-neon uppercase">{p.short}</p>
             <h3 id="modal-title" className="mt-2 font-display text-3xl font-extrabold text-white sm:text-4xl">{p.title}</h3>
             <p className="mt-4 text-lg leading-relaxed text-gray">{p.description}</p>
@@ -71,8 +71,8 @@ export default function ProjectModal({ project: p, onClose }: { project: Project
               {p.live && <a href={p.live} target="_blank" rel="noopener" className="btn btn-red">Live demo <ArrowUpRight /></a>}
               <a href={p.repo} target="_blank" rel="noopener" className="btn btn-ghost"><GithubIcon /> Source code</a>
             </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.7, ease }}>
+          </m.div>
+          <m.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.7, ease }}>
             <h4 className="text-sm font-bold tracking-[.18em] text-white uppercase">Key features</h4>
             <ul className="mt-4 space-y-3">
               {p.features.map((f) => (
@@ -83,10 +83,10 @@ export default function ProjectModal({ project: p, onClose }: { project: Project
             <ul className="mt-4 flex flex-wrap gap-2">
               {p.stack.map((s) => <li key={s} className="rounded-full border border-neon/25 bg-neon/[.07] px-3 py-1 font-mono text-xs text-[#ffb3b3]">{s}</li>)}
             </ul>
-          </motion.div>
+          </m.div>
         </div>
-      </motion.div>
-    </motion.div>,
+      </m.div>
+    </m.div>,
     document.body,
   )
 }

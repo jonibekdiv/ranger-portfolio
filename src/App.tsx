@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { MotionConfig } from 'framer-motion'
+import { useCallback, useEffect, useState } from 'react'
+import { LazyMotion, MotionConfig } from 'framer-motion'
 import Loader from './components/Loader'
 import Cursor from './components/Cursor'
 import Nav from './components/Nav'
@@ -11,8 +11,12 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import { gsap, ScrollTrigger, useSmoothScroll } from './lib/motion'
 
+// Animation features (incl. layout animations) load in a separate chunk.
+const loadFeatures = () => import('./lib/motion-features').then((mod) => mod.default)
+
 export default function App() {
   const [ready, setReady] = useState(false)
+  const onLoaded = useCallback(() => setReady(true), [])
   useSmoothScroll(ready)
 
   // Scroll-based background colour transitions between sections.
@@ -40,8 +44,9 @@ export default function App() {
   }, [ready])
 
   return (
+    <LazyMotion features={loadFeatures} strict>
     <MotionConfig reducedMotion="user">
-      <Loader onDone={() => setReady(true)} />
+      <Loader onDone={onLoaded} />
       <Cursor />
       <div className="grain" aria-hidden="true" />
       <Nav ready={ready} />
@@ -54,5 +59,6 @@ export default function App() {
       </main>
       <Footer />
     </MotionConfig>
+    </LazyMotion>
   )
 }

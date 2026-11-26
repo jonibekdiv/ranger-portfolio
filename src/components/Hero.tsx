@@ -1,6 +1,6 @@
 import { Component, lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
 import { m } from 'framer-motion'
-import { ArrowRight, Mail } from 'lucide-react'
+import { ArrowRight, FileDown, Mail } from 'lucide-react'
 import SplitText from './SplitText'
 import Magnetic from './Magnetic'
 import WorkspaceFallback from './WorkspaceFallback'
@@ -117,6 +117,9 @@ export default function Hero({ ready }: { ready: boolean }) {
           <m.div {...up(1.2)} className="mt-9 flex gap-3">
             <a href={profile.telegram} target="_blank" rel="noopener" aria-label="Telegram" className="icon-btn glass"><TelegramIcon /></a>
             <a href={profile.github} target="_blank" rel="noopener" aria-label="GitHub" className="icon-btn glass"><GithubIcon /></a>
+            <a href={profile.cv} download className="glass group inline-flex h-[46px] items-center gap-2.5 rounded-[14px] px-4 text-xs font-bold tracking-[.14em] text-white uppercase transition hover:-translate-y-1 hover:border-neon hover:bg-neon hover:shadow-[0_10px_28px_-6px_rgba(255,32,32,.9)]">
+              <FileDown size={18} className="text-neon transition group-hover:text-white" /> {t.hero.cv}
+            </a>
           </m.div>
         </div>
 

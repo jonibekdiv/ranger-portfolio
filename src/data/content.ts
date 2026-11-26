@@ -7,6 +7,7 @@ export const profile = {
   telegramUser: 'jonibekdev',
   github: 'https://github.com/jonibekdiv',
   githubHandle: 'jonibekdiv',
+  cv: '/Jonibek-Ranger-CV.pdf',
   // Fill these in to show them in the Contact section. Empty values are hidden.
   instagram: '',
   email: '',

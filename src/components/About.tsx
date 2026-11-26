@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { m } from 'framer-motion'
-import { Code2, Flag, MapPin, Sparkles, User } from 'lucide-react'
+import { Code2, FileDown, Flag, MapPin, Sparkles, User } from 'lucide-react'
 import TiltCard from './TiltCard'
 import Stats from './Stats'
 import { profile } from '../data/content'
@@ -128,6 +128,9 @@ export default function About() {
               </m.li>
             ) })}
           </ul>
+          <a href={profile.cv} download className="btn btn-red btn-sm relative z-[2] mt-4 w-full">
+            <FileDown /> {t.hero.cv}
+          </a>
         </TiltCard>
       </div>
       <Stats />

@@ -23,6 +23,7 @@ const en = {
     explore: 'Explore my work',
     contact: 'Contact me',
     scroll: 'Scroll to About',
+    cv: 'Download CV',
   },
   about: {
     kicker: 'About me',
@@ -119,6 +120,7 @@ const uz: Dict = {
     explore: "Ishlarimni ko'rish",
     contact: "Bog'lanish",
     scroll: "Men haqimda bo'limiga o'tish",
+    cv: 'CV yuklab olish',
   },
   about: {
     kicker: 'Men haqimda',
@@ -213,6 +215,7 @@ const ru: Dict = {
     explore: 'Смотреть работы',
     contact: 'Связаться',
     scroll: 'Перейти к разделу «Обо мне»',
+    cv: 'Скачать резюме',
   },
   about: {
     kicker: 'Обо мне',

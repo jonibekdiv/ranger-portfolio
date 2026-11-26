@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { m } from 'framer-motion'
 import { Code2, Flag, MapPin, Sparkles, User } from 'lucide-react'
 import TiltCard from './TiltCard'
+import Stats from './Stats'
 import { profile } from '../data/content'
 import { useI18n } from '../i18n'
 import { ScrambleText, SectionReveal } from './Effects'
@@ -129,6 +130,7 @@ export default function About() {
           </ul>
         </TiltCard>
       </div>
+      <Stats />
     </section>
   )
 }

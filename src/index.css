@@ -234,6 +234,29 @@ img { max-width: 100%; display: block; }
   box-shadow: 0 0 18px 1px rgba(255, 32, 32, .7);
 }
 
+/* ---------- process timeline ---------- */
+.process-node { transition: background-color .5s, border-color .5s, color .5s, box-shadow .5s, transform .5s var(--ease-out-expo); }
+.process-step.is-on .process-node {
+  background: var(--color-neon); border-color: var(--color-neon); color: #fff;
+  box-shadow: 0 0 0 6px rgba(255,32,32,.15), 0 0 30px rgba(255,32,32,.7);
+  transform: scale(1.06);
+}
+.process-card { transition: border-color .5s, box-shadow .5s; }
+.process-step.is-on .process-card { border-color: rgba(255,32,32,.35); box-shadow: 0 20px 60px -30px rgba(255,32,32,.6); }
+
+/* ---------- matrix rain + cursor trail canvases ---------- */
+.fx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.trail-canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99; }
+
+/* ---------- sound toggle ---------- */
+.sound-bars { display: flex; align-items: flex-end; gap: 2px; height: 14px; }
+.sound-bars i { width: 2px; height: 30%; border-radius: 1px; background: currentColor; transition: height .3s; }
+.sound-on .sound-bars i { animation: eq 1s ease-in-out infinite; }
+.sound-on .sound-bars i:nth-child(2) { animation-delay: -.3s; }
+.sound-on .sound-bars i:nth-child(3) { animation-delay: -.6s; }
+.sound-on .sound-bars i:nth-child(4) { animation-delay: -.15s; }
+@keyframes eq { 0%, 100% { height: 25% } 50% { height: 100% } }
+
 @media (prefers-reduced-motion: reduce) {
   .section-line { transform: scaleX(1); }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

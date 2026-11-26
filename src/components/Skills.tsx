@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { m } from 'framer-motion'
 import TiltCard from './TiltCard'
+import MatrixRain from './MatrixRain'
 import { techIcons } from './Icons'
 import { skills } from '../data/content'
 import { useI18n } from '../i18n'
@@ -26,6 +27,9 @@ export default function Skills() {
   return (
     <section ref={root} id="skills" data-bg="#050505" aria-labelledby="skills-title" className="relative overflow-hidden py-28 lg:py-40">
       <SectionReveal />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_80%_70%_at_50%_50%,#000_30%,transparent_85%)]">
+        <MatrixRain opacity={0.4} />
+      </div>
       {/* floating technology wall */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 flex flex-col justify-center gap-10 opacity-[.07] [mask-image:linear-gradient(90deg,transparent,#000_20%,#000_80%,transparent)]">
         {[0, 1].map((row) => (

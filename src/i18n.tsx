@@ -86,6 +86,20 @@ const en = {
       offline: 'No connection. Please check your internet.',
     } as Record<string, string>,
   },
+  process: {
+    kicker: 'How I work',
+    t1: 'From idea',
+    t2a: 'to launch',
+    desc: 'A clear process, so you always know what happens next.',
+    steps: [
+      { title: 'Idea', desc: 'We discuss your goals, audience and features, and agree on a plan and a deadline.' },
+      { title: 'Design', desc: 'I design the look and the user flow, then refine it together with your feedback.' },
+      { title: 'Development', desc: 'I build a fast, responsive site or app with clean code and smooth animations.' },
+      { title: 'Launch', desc: 'I deploy it, connect the domain and stay in touch for fixes and updates.' },
+    ],
+  },
+  stats: { projects: 'Projects on GitHub', tech: 'Technologies', platforms: 'Platforms: web, mobile, bots' },
+  sound: { on: 'Sound on', off: 'Sound off' },
   footer: { built: 'Built with React, Three.js & GSAP.', top: 'Back to top' },
 }
 
@@ -168,6 +182,20 @@ const uz: Dict = {
       offline: "Internet aloqasi yo'q. Ulanishni tekshiring.",
     },
   },
+  process: {
+    kicker: 'Qanday ishlayman',
+    t1: "G'oyadan",
+    t2a: 'ishga tushirishgacha',
+    desc: 'Aniq jarayon: har doim keyingi qadam nima ekanini bilasiz.',
+    steps: [
+      { title: "G'oya", desc: "Maqsadlaringiz, auditoriya va kerakli imkoniyatlarni muhokama qilamiz, reja va muddatni kelishib olamiz." },
+      { title: 'Dizayn', desc: "Ko'rinish va foydalanuvchi yo'lini chizaman, keyin fikringiz asosida birga takomillashtiramiz." },
+      { title: 'Dasturlash', desc: 'Toza kod va silliq animatsiyalar bilan tez ishlaydigan, moslashuvchan sayt yoki ilova yarataman.' },
+      { title: 'Ishga tushirish', desc: "Saytni internetga chiqaraman, domenni ulayman va tuzatish hamda yangilanishlar uchun aloqada bo'laman." },
+    ],
+  },
+  stats: { projects: "GitHub'dagi loyihalar", tech: 'Texnologiyalar', platforms: 'Platformalar: veb, mobil, botlar' },
+  sound: { on: 'Ovoz yoqilgan', off: "Ovoz o'chirilgan" },
   footer: { built: 'React, Three.js va GSAP bilan yaratilgan.', top: 'Tepaga qaytish' },
 }
 
@@ -248,6 +276,20 @@ const ru: Dict = {
       offline: 'Нет соединения. Проверьте интернет.',
     },
   },
+  process: {
+    kicker: 'Как я работаю',
+    t1: 'От идеи',
+    t2a: 'до запуска',
+    desc: 'Понятный процесс — вы всегда знаете, что будет дальше.',
+    steps: [
+      { title: 'Идея', desc: 'Обсуждаем цели, аудиторию и функции, согласуем план и сроки.' },
+      { title: 'Дизайн', desc: 'Продумываю внешний вид и сценарии, затем дорабатываем вместе по вашим отзывам.' },
+      { title: 'Разработка', desc: 'Создаю быстрый адаптивный сайт или приложение с чистым кодом и плавными анимациями.' },
+      { title: 'Запуск', desc: 'Публикую проект, подключаю домен и остаюсь на связи для правок и обновлений.' },
+    ],
+  },
+  stats: { projects: 'Проектов на GitHub', tech: 'Технологий', platforms: 'Платформы: веб, мобайл, боты' },
+  sound: { on: 'Звук включён', off: 'Звук выключен' },
   footer: { built: 'Сделано на React, Three.js и GSAP.', top: 'Наверх' },
 }
 

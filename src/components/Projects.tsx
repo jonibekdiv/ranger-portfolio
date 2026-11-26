@@ -7,7 +7,7 @@ import { GithubIcon } from './Icons'
 import { projects, profile, type Project } from '../data/content'
 import { useI18n } from '../i18n'
 import { ScrambleText, SectionReveal } from './Effects'
-import { ease, gsap, prefersReducedMotion } from '../lib/motion'
+import { ease, gsap, prefersReducedMotion, ScrollTrigger } from '../lib/motion'
 
 export function BotPreview({ big = false }: { big?: boolean }) {
   const msgs = [
@@ -126,7 +126,10 @@ export default function Projects({ ready }: { ready: boolean }) {
         gsap.from(card, { y: 80, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 88%' } })
       })
     })
-    return () => mm.revert()
+    // The pin is created after sections below it already set up their triggers:
+    // re-order by page position and recalculate so later sections start at the right scroll offset.
+    const id = window.setTimeout(() => { ScrollTrigger.sort(); ScrollTrigger.refresh() }, 120)
+    return () => { clearTimeout(id); mm.revert() }
   }, [ready])
 
   return (

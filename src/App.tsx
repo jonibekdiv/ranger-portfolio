@@ -9,6 +9,8 @@ import About from './components/About'
 import Skills from './components/Skills'
 import Projects from './components/Projects'
 import Contact from './components/Contact'
+import Process from './components/Process'
+import SoundToggle from './components/SoundToggle'
 import Footer from './components/Footer'
 import { gsap, ScrollTrigger, useSmoothScroll } from './lib/motion'
 
@@ -50,6 +52,7 @@ export default function App() {
     <MotionConfig reducedMotion="user">
       <Loader onDone={onLoaded} />
       <Cursor />
+      <SoundToggle />
       <div className="grain" aria-hidden="true" />
       <Nav ready={ready} />
       <main>
@@ -57,6 +60,7 @@ export default function App() {
         <About />
         <Skills />
         <Projects ready={ready} />
+        <Process />
         <Contact />
       </main>
       <Footer />

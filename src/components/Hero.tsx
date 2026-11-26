@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { Component, lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
 import { m } from 'framer-motion'
 import { ArrowRight, Mail } from 'lucide-react'
 import SplitText from './SplitText'
@@ -6,13 +6,22 @@ import Magnetic from './Magnetic'
 import WorkspaceFallback from './WorkspaceFallback'
 import { GithubIcon, TelegramIcon } from './Icons'
 import { profile } from '../data/content'
+import { useI18n } from '../i18n'
 import { canRender3D, ease, gsap, scrollToId } from '../lib/motion'
 
 const Workspace3D = lazy(() => import('./Workspace3D'))
 
+/** If WebGL fails at runtime (driver, lost context, chunk error), show the CSS scene instead. */
+class SceneBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  render() { return this.state.failed ? this.props.fallback : this.props.children }
+}
+
 export default function Hero({ ready }: { ready: boolean }) {
   const root = useRef<HTMLElement>(null)
   const [use3D] = useState(canRender3D)
+  const { t } = useI18n()
   const up = (d: number) => ({
     initial: { opacity: 0, y: 30, filter: 'blur(6px)' },
     animate: ready ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {},
@@ -25,14 +34,14 @@ export default function Hero({ ready }: { ready: boolean }) {
     const ctx = gsap.context(() => {
       const st = { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true }
       gsap.to('[data-hero-copy]', { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: st })
-      gsap.to('[data-hero-scene]', { yPercent: 12, scale: 0.92, opacity: 0.25, ease: 'none', scrollTrigger: st })
+      gsap.fromTo('[data-hero-scene]', { yPercent: 0, scale: 1, opacity: 1 }, { yPercent: 12, scale: 0.92, opacity: 0.25, ease: 'none', scrollTrigger: st })
       gsap.fromTo('[data-hero-word]', { xPercent: 0 }, { xPercent: -25, ease: 'none', scrollTrigger: st })
     }, root)
     return () => ctx.revert()
   }, [ready])
 
   return (
-    <section ref={root} id="home" data-bg="#050505" aria-label="Introduction" className="pad-x relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-20">
+    <section ref={root} id="home" data-bg="#050505" aria-label={t.hero.aria} className="pad-x relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-20">
       {/* atmosphere */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute -top-40 -left-40 h-[480px] w-[560px] rounded-full border border-neon/50 bg-[radial-gradient(circle_at_70%_70%,#2a0000,#080000_70%)] shadow-[0_0_80px_rgba(255,32,32,.25)]" />
@@ -64,11 +73,11 @@ export default function Hero({ ready }: { ready: boolean }) {
       <div className="relative z-10 mx-auto grid w-full max-w-[1440px] items-center gap-10 lg:grid-cols-[1fr_1.15fr]">
         <div data-hero-copy>
           <m.div {...up(0.1)} className="glass inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-bold tracking-[.22em] text-white">
-            <span className="pulse-dot" /> AVAILABLE FOR PROJECTS
+            <span className="pulse-dot" /> {t.hero.badge}
           </m.div>
 
           <m.p {...up(0.25)} className="mt-7 font-display text-lg font-bold tracking-[.08em] text-white/90 sm:text-xl">
-            HELLO, I'M JONIBEK.
+            {t.hero.hello}
           </m.p>
 
           <h1 className="mt-1 font-display text-[clamp(76px,10.5vw,190px)] leading-[.82] font-black italic tracking-[-.04em] text-neon text-glow">
@@ -76,21 +85,21 @@ export default function Hero({ ready }: { ready: boolean }) {
           </h1>
 
           <m.p {...up(0.9)} className="mt-6 font-display text-base font-bold tracking-[.12em] text-white sm:text-lg">
-            FRONTEND DEVELOPER <span className="text-neon">&amp;</span> CREATIVE WEB DESIGNER
+            {t.hero.role1} <span className="text-neon">&amp;</span> {t.hero.role2}
           </m.p>
           <m.p {...up(1)} className="mt-3 max-w-[44ch] text-lg leading-relaxed text-gray">
-            I build modern, interactive and beautiful digital experiences.
+            {t.hero.desc}
           </m.p>
 
           <m.div {...up(1.1)} className="mt-9 flex flex-wrap gap-4">
             <Magnetic>
               <a href="#projects" onClick={(e) => { e.preventDefault(); scrollToId('projects') }} className="btn btn-red">
-                Explore my work <ArrowRight />
+                {t.hero.explore} <ArrowRight />
               </a>
             </Magnetic>
             <Magnetic>
               <a href="#contact" onClick={(e) => { e.preventDefault(); scrollToId('contact') }} className="btn btn-ghost">
-                Contact me <Mail />
+                {t.hero.contact} <Mail />
               </a>
             </Magnetic>
           </m.div>
@@ -102,29 +111,33 @@ export default function Hero({ ready }: { ready: boolean }) {
         </div>
 
         <m.div
-          data-hero-scene
           className="relative h-[min(62vh,620px)] min-h-[340px] w-full"
           initial={{ opacity: 0, scale: 0.94, x: 60 }}
           animate={ready ? { opacity: 1, scale: 1, x: 0 } : {}}
           transition={{ duration: 1.4, ease, delay: 0.35 }}
         >
-          {use3D ? (
-            // Mount the WebGL scene only after the first paint so it doesn't compete with the hero text.
-            ready && (
-              <Suspense fallback={null}>
-                <Workspace3D />
-              </Suspense>
-            )
-          ) : (
-            <div className="flex h-full items-center"><WorkspaceFallback /></div>
-          )}
+          {/* GSAP scroll effects live on this inner wrapper so they never fight the entrance animation. */}
+          <div data-hero-scene className="h-full w-full">
+            {use3D ? (
+              // Mount the WebGL scene only after the first paint so it doesn't compete with the hero text.
+              ready && (
+                <SceneBoundary fallback={<div className="flex h-full items-center"><WorkspaceFallback /></div>}>
+                  <Suspense fallback={null}>
+                    <Workspace3D />
+                  </Suspense>
+                </SceneBoundary>
+              )
+            ) : (
+              <div className="flex h-full items-center"><WorkspaceFallback /></div>
+            )}
+          </div>
         </m.div>
       </div>
 
       <m.a
         href="#about"
         onClick={(e) => { e.preventDefault(); scrollToId('about') }}
-        aria-label="Scroll to About"
+        aria-label={t.hero.scroll}
         className="absolute bottom-7 left-1/2 z-10 hidden h-11 w-7 -translate-x-1/2 rounded-full border-2 border-white/30 md:block"
         initial={{ opacity: 0 }}
         animate={ready ? { opacity: 1 } : {}}

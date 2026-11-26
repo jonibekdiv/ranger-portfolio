@@ -5,6 +5,7 @@ import TiltCard from './TiltCard'
 import ProjectModal from './ProjectModal'
 import { GithubIcon } from './Icons'
 import { projects, profile, type Project } from '../data/content'
+import { useI18n } from '../i18n'
 import { ease, gsap, prefersReducedMotion } from '../lib/motion'
 
 export function BotPreview({ big = false }: { big?: boolean }) {
@@ -43,6 +44,8 @@ export function BotPreview({ big = false }: { big?: boolean }) {
 }
 
 function Card({ p, onOpen, wide }: { p: Project; onOpen: () => void; wide: boolean }) {
+  const { t } = useI18n()
+  const tx = t.projects.items[p.id]
   return (
     <article className={`project-card shrink-0 ${wide ? 'lg:w-[min(46vw,760px)]' : 'lg:w-[min(36vw,560px)]'} w-full`}>
       <TiltCard max={6} className="glass glow-border group relative overflow-hidden rounded-[28px]">
@@ -50,12 +53,12 @@ function Card({ p, onOpen, wide }: { p: Project; onOpen: () => void; wide: boole
           type="button"
           onClick={onOpen}
           data-cursor="view"
-          data-cursor-label="OPEN"
-          aria-label={`Open details for ${p.title}`}
+          data-cursor-label={t.projects.openLabel}
+          aria-label={t.projects.open(p.title)}
           className="relative block aspect-[16/10] w-full overflow-hidden lg:aspect-[16/8.5]"
         >
           {p.image ? (
-            <img data-parallax src={p.image} alt={`Screenshot of ${p.title}`} loading="lazy" width={1280} height={800} className="h-[115%] w-full object-cover object-top transition-transform duration-[1.2s] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.06]" />
+            <img data-parallax src={p.image} alt={t.projects.shot(p.title)} loading="lazy" width={1280} height={800} className="h-[115%] w-full object-cover object-top transition-transform duration-[1.2s] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.06]" />
           ) : (
             <BotPreview />
           )}
@@ -66,17 +69,17 @@ function Card({ p, onOpen, wide }: { p: Project; onOpen: () => void; wide: boole
           </span>
         </button>
         <div className="relative z-[2] p-6 sm:p-7">
-          <p className="text-xs font-bold tracking-[.2em] text-neon uppercase">{p.short}</p>
+          <p className="text-xs font-bold tracking-[.2em] text-neon uppercase">{tx.short}</p>
           <h3 className="mt-2 font-display text-2xl font-extrabold text-white sm:text-3xl">{p.title}</h3>
-          <p className="mt-3 line-clamp-2 text-gray">{p.description}</p>
-          <ul className="mt-5 flex flex-wrap gap-2" aria-label="Technologies">
+          <p className="mt-3 line-clamp-2 text-gray">{tx.description}</p>
+          <ul className="mt-5 flex flex-wrap gap-2" aria-label={t.projects.tech}>
             {p.stack.slice(0, 4).map((s) => (
               <li key={s} className="rounded-full border border-neon/25 bg-neon/[.07] px-3 py-1 font-mono text-xs text-[#ffb3b3]">{s}</li>
             ))}
           </ul>
           <div className="mt-6 flex flex-wrap gap-3">
             {p.live && (
-              <a href={p.live} target="_blank" rel="noopener" className="btn btn-red btn-sm">Live demo <ArrowUpRight /></a>
+              <a href={p.live} target="_blank" rel="noopener" className="btn btn-red btn-sm">{t.projects.live} <ArrowUpRight /></a>
             )}
             <a href={p.repo} target="_blank" rel="noopener" className="btn btn-ghost btn-sm"><GithubIcon /> GitHub</a>
           </div>
@@ -87,6 +90,7 @@ function Card({ p, onOpen, wide }: { p: Project; onOpen: () => void; wide: boole
 }
 
 export default function Projects({ ready }: { ready: boolean }) {
+  const pt = useI18n().t.projects
   const root = useRef<HTMLElement>(null)
   const track = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState<Project | null>(null)
@@ -129,12 +133,12 @@ export default function Projects({ ready }: { ready: boolean }) {
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(255,32,32,.12),transparent_60%)]" />
       <div ref={track} className="pad-x relative flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-12 lg:pr-[12vw]">
         <div className="shrink-0 lg:w-[min(34vw,520px)]">
-          <m.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker">My projects</m.span>
+          <m.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker">{pt.kicker}</m.span>
           <m.h2 id="projects-title" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, ease, delay: 0.1 }} className="h2 mt-5">
-            Some Of My<br />Recent <span className="text-neon text-glow">Works</span>
+            {pt.t1}<br />{pt.t2} <span className="text-neon text-glow">{pt.t2a}</span>
           </m.h2>
-          <p className="mt-6 max-w-[36ch] text-gray">Selected projects, from esports platforms to 3D stores and Telegram bots. Scroll to explore, click a card for details.</p>
-          <a href={`${profile.github}?tab=repositories`} target="_blank" rel="noopener" className="btn btn-ghost btn-sm mt-8">All projects on GitHub <ArrowUpRight /></a>
+          <p className="mt-6 max-w-[36ch] text-gray">{pt.desc}</p>
+          <a href={`${profile.github}?tab=repositories`} target="_blank" rel="noopener" className="btn btn-ghost btn-sm mt-8">{pt.all} <ArrowUpRight /></a>
         </div>
         {projects.map((p, i) => (
           <div key={p.id} className={`lg:pt-10 ${i % 2 ? 'lg:translate-y-8' : 'lg:-translate-y-2'}`}>

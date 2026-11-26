@@ -3,15 +3,10 @@ import { m } from 'framer-motion'
 import { Code2, Flag, MapPin, Sparkles, User } from 'lucide-react'
 import TiltCard from './TiltCard'
 import { profile } from '../data/content'
+import { useI18n } from '../i18n'
 import { ease, gsap } from '../lib/motion'
 
-const info = [
-  { icon: User, label: 'Name', value: profile.name },
-  { icon: Code2, label: 'Role', value: profile.role },
-  { icon: MapPin, label: 'Country', value: profile.country },
-  { icon: Sparkles, label: 'Specialty', value: 'Web Development' },
-  { icon: Flag, label: 'Brand', value: profile.brand },
-]
+const infoIcons = { name: User, role: Code2, country: MapPin, specialty: Sparkles, brand: Flag }
 
 const chips = [
   { text: '<div />', cls: 'left-[2%] top-[8%]', depth: -60 },
@@ -28,6 +23,15 @@ const reveal = {
 
 export default function About() {
   const root = useRef<HTMLElement>(null)
+  const { t } = useI18n()
+  const a = t.about
+  const info = [
+    { key: 'name', value: profile.name },
+    { key: 'role', value: a.values.role },
+    { key: 'country', value: a.values.country },
+    { key: 'specialty', value: a.values.specialty },
+    { key: 'brand', value: profile.brand },
+  ] as const
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -47,12 +51,12 @@ export default function About() {
 
       <div className="relative mx-auto grid max-w-[1440px] items-center gap-14 lg:grid-cols-[1.05fr_1fr_.8fr]">
         <div>
-          <m.span {...reveal} transition={{ duration: 0.8, ease }} className="kicker">About me</m.span>
+          <m.span {...reveal} transition={{ duration: 0.8, ease }} className="kicker">{a.kicker}</m.span>
           <m.h2 id="about-title" {...reveal} transition={{ duration: 0.9, ease, delay: 0.1 }} className="h2 mt-5">
-            Turning Ideas<br />Into <span className="text-neon text-glow">Reality</span>
+            {a.t1}<br />{a.t2} <span className="text-neon text-glow">{a.t2a}</span>
           </m.h2>
           <m.p {...reveal} transition={{ duration: 0.9, ease, delay: 0.2 }} className="mt-6 max-w-[46ch] text-lg leading-relaxed text-gray">
-            I'm Jonibek, a Frontend Developer from Uzbekistan. I enjoy transforming creative ideas into modern digital experiences. I'm constantly learning new technologies and improving my development skills.
+            {a.text}
           </m.p>
         </div>
 
@@ -97,16 +101,16 @@ export default function About() {
         {/* info cards */}
         <TiltCard max={8} className="glass glow-border is-on relative rounded-3xl p-6">
           <div className="relative z-[2] flex items-center gap-4 border-b border-white/10 pb-5">
-            <img src="/img/avatar.webp" alt="Portrait of Jonibek" width={64} height={64} loading="lazy" className="h-16 w-16 rounded-full border-2 border-neon object-cover shadow-[0_0_24px_rgba(255,32,32,.5)]" />
+            <img src="/img/avatar.webp" alt={a.portrait} width={64} height={64} loading="lazy" className="h-16 w-16 rounded-full border-2 border-neon object-cover shadow-[0_0_24px_rgba(255,32,32,.5)]" />
             <div>
               <p className="font-display text-lg font-bold text-white">Jonibek</p>
-              <p className="text-sm text-gray">aka <span className="text-neon">Ranger</span></p>
+              <p className="text-sm text-gray">{a.aka} <span className="text-neon">Ranger</span></p>
             </div>
           </div>
           <ul className="relative z-[2] mt-2">
-            {info.map(({ icon: Icon, label, value }, i) => (
+            {info.map(({ key, value }, i) => { const Icon = infoIcons[key]; return (
               <m.li
-                key={label}
+                key={key}
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -115,11 +119,11 @@ export default function About() {
               >
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-neon/10 text-neon"><Icon size={19} /></span>
                 <div>
-                  <p className="text-xs text-gray">{label}</p>
+                  <p className="text-xs text-gray">{a.labels[key]}</p>
                   <p className="font-semibold text-white">{value}</p>
                 </div>
               </m.li>
-            ))}
+            ) })}
           </ul>
         </TiltCard>
       </div>

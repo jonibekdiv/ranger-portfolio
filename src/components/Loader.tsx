@@ -1,12 +1,14 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, m } from 'framer-motion'
 import { Logo } from './Icons'
+import { useI18n } from '../i18n'
 import { ease, lockScroll } from '../lib/motion'
 
 /** Shows until fonts + page assets are actually ready. No artificial delay. */
 export default function Loader({ onDone }: { onDone: () => void }) {
   const [progress, setProgress] = useState(0.1)
   const [visible, setVisible] = useState(true)
+  const { t } = useI18n()
 
   useEffect(() => {
     // The app is mounted, so scripts are ready; wait only for the web fonts (max 1.5s).
@@ -56,7 +58,7 @@ export default function Loader({ onDone }: { onDone: () => void }) {
               transition={{ duration: 0.6, ease }}
             />
           </div>
-          <p className="font-mono text-xs tracking-[.3em] text-gray">INITIALIZING EXPERIENCE...</p>
+          <p className="font-mono text-xs tracking-[.3em] text-gray">{t.loader}</p>
         </m.div>
       )}
     </AnimatePresence>

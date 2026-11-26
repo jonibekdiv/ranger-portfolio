@@ -5,29 +5,35 @@ import Magnetic from './Magnetic'
 import { GithubIcon, InstagramIcon, TelegramIcon } from './Icons'
 import { profile } from '../data/content'
 import { ease } from '../lib/motion'
+import { useI18n } from '../i18n'
 
-type Errors = Partial<Record<'name' | 'email' | 'message', string>>
-type Status = { kind: 'idle' } | { kind: 'ok'; text: string } | { kind: 'error'; text: string }
+type Field = 'name' | 'email' | 'message'
+type ErrKey = 'errName' | 'errEmail' | 'errMessage'
+type Errors = Partial<Record<Field, ErrKey>>
+// Status keeps translation keys (not text) so it re-renders correctly when the language changes.
+type Status = { kind: 'idle' } | { kind: 'ok' } | { kind: 'fix' } | { kind: 'server'; code: string }
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
-function validate(v: { name: string; email: string; message: string }): Errors {
+function validate(v: Record<Field, string>): Errors {
   const e: Errors = {}
-  if (v.name.trim().length < 2) e.name = 'Please enter your name (at least 2 characters).'
-  if (!emailRe.test(v.email.trim())) e.email = 'Please enter a valid email, e.g. you@example.com.'
-  if (v.message.trim().length < 10) e.message = 'Tell me a bit more (at least 10 characters).'
+  if (v.name.trim().length < 2) e.name = 'errName'
+  if (!emailRe.test(v.email.trim())) e.email = 'errEmail'
+  if (v.message.trim().length < 10) e.message = 'errMessage'
   return e
 }
 
 export default function Contact() {
-  const [values, setValues] = useState({ name: '', email: '', message: '' })
+  const { t } = useI18n()
+  const c = t.contact
+  const [values, setValues] = useState<Record<Field, string>>({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState<Errors>({})
   const [touched, setTouched] = useState(false)
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [sending, setSending] = useState(false)
   const [trap, setTrap] = useState('')
 
-  const set = (k: keyof typeof values) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const set = (k: Field) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const next = { ...values, [k]: e.target.value }
     setValues(next)
     if (touched) setErrors(validate(next))
@@ -41,7 +47,7 @@ export default function Contact() {
     const errs = validate(values)
     setErrors(errs)
     if (Object.keys(errs).length) {
-      setStatus({ kind: 'error', text: 'Please fix the highlighted fields.' })
+      setStatus({ kind: 'fix' })
       return
     }
     setSending(true)
@@ -52,21 +58,26 @@ export default function Contact() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...values, website: trap }),
       })
-      const data = (await res.json().catch(() => ({}))) as { error?: string }
       if (res.ok) {
-        setStatus({ kind: 'ok', text: "Message sent! I'll get back to you soon." })
+        setStatus({ kind: 'ok' })
         setValues({ name: '', email: '', message: '' })
         setTouched(false)
         setErrors({})
       } else {
-        setStatus({ kind: 'error', text: `${data.error ?? 'Something went wrong.'} You can also reach me on Telegram: @${profile.telegramUser}.` })
+        setStatus({ kind: 'server', code: String(res.status) })
       }
     } catch {
-      setStatus({ kind: 'error', text: `No connection. Please check your internet or write on Telegram: @${profile.telegramUser}.` })
+      setStatus({ kind: 'server', code: 'offline' })
     } finally {
       setSending(false)
     }
   }
+
+  const statusText =
+    status.kind === 'ok' ? c.sent
+    : status.kind === 'fix' ? c.fix
+    : status.kind === 'server' ? `${c.server[status.code] ?? c.server.other} ${c.alt(profile.telegramUser)}`
+    : ''
 
   const channels = [
     { href: profile.telegram, label: 'Telegram', value: `@${profile.telegramUser}`, Icon: TelegramIcon },
@@ -75,7 +86,7 @@ export default function Contact() {
     profile.email && { href: `mailto:${profile.email}`, label: 'Email', value: profile.email, Icon: (p: React.SVGProps<SVGSVGElement>) => <Mail {...(p as object)} /> },
   ].filter(Boolean) as { href: string; label: string; value: string; Icon: (p: React.SVGProps<SVGSVGElement>) => React.JSX.Element }[]
 
-  const field = (k: keyof typeof values, label: string, type = 'text') => {
+  const field = (k: Field, label: string, type = 'text') => {
     const err = errors[k]
     const Tag = k === 'message' ? 'textarea' : 'input'
     return (
@@ -95,7 +106,7 @@ export default function Contact() {
         <label htmlFor={`f-${k}`}>{label}</label>
         <AnimatePresence>
           {err && (
-            <m.span id={`e-${k}`} className="err" initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>{err}</m.span>
+            <m.span id={`e-${k}`} className="err" initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>{c[err]}</m.span>
           )}
         </AnimatePresence>
       </div>
@@ -107,10 +118,10 @@ export default function Contact() {
       <div aria-hidden="true" className="pointer-events-none absolute -bottom-40 left-1/2 h-[600px] w-[1100px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(255,32,32,.22),transparent_60%)] blur-2xl" />
       <div className="relative mx-auto grid max-w-[1440px] gap-14 lg:grid-cols-[1fr_1.05fr] lg:items-center">
         <div>
-          <m.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker">Contact</m.span>
-          <h2 id="contact-title" className="mt-6 font-display text-[clamp(44px,6.4vw,104px)] leading-[.9] font-black tracking-[-.04em] text-white">
-            {["LET'S BUILD", 'SOMETHING', 'AMAZING.'].map((line, i) => (
-              <span key={line} className="block overflow-hidden pb-1">
+          <m.span initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease }} className="kicker">{c.kicker}</m.span>
+          <h2 id="contact-title" className="mt-6 font-display text-[clamp(40px,6vw,100px)] leading-[.92] font-black tracking-[-.04em] text-white">
+            {c.lines.map((line, i) => (
+              <span key={i} className="block overflow-hidden pb-1">
                 <m.span
                   className={`block ${i === 2 ? 'text-neon text-glow italic' : ''}`}
                   initial={{ y: '105%' }}
@@ -123,7 +134,7 @@ export default function Contact() {
               </span>
             ))}
           </h2>
-          <p className="mt-6 max-w-[40ch] text-lg text-gray">Have an interesting idea? Let's turn it into reality.</p>
+          <p className="mt-6 max-w-[40ch] text-lg text-gray">{c.desc}</p>
 
           <ul className="mt-10 grid gap-3 sm:grid-cols-2">
             {channels.map(({ href, label, value, Icon }, i) => (
@@ -136,7 +147,7 @@ export default function Contact() {
             ))}
             <li className="glass flex items-center gap-4 rounded-2xl p-4">
               <span className="grid h-11 w-11 place-items-center rounded-xl bg-neon/10 text-neon"><MapPin size={20} /></span>
-              <span><span className="block text-xs text-gray">Location</span><span className="font-semibold text-white">{profile.country}</span></span>
+              <span><span className="block text-xs text-gray">{c.location}</span><span className="font-semibold text-white">{c.country}</span></span>
             </li>
           </ul>
         </div>
@@ -144,7 +155,7 @@ export default function Contact() {
         <m.form
           noValidate
           onSubmit={onSubmit}
-          aria-label="Contact form"
+          aria-label={c.form}
           className="glass glow-border is-on relative rounded-[32px] p-6 sm:p-10"
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -164,34 +175,34 @@ export default function Contact() {
               className="absolute -left-[9999px] h-0 w-0 opacity-0"
             />
             <div className="grid gap-5 sm:grid-cols-2">
-              {field('name', 'Your name')}
-              {field('email', 'Your email', 'email')}
+              {field('name', c.name)}
+              {field('email', c.email, 'email')}
             </div>
-            {field('message', 'Tell me about your project')}
+            {field('message', c.message)}
             <div className="flex flex-wrap items-center gap-4">
               <Magnetic>
                 <button type="submit" disabled={sending} aria-busy={sending} className="btn btn-red">
                   {sending ? (
-                    <>Sending <Loader2 className="animate-spin" /></>
+                    <>{c.sending} <Loader2 className="animate-spin" /></>
                   ) : (
-                    <>Send message <ArrowRight /></>
+                    <>{c.send} <ArrowRight /></>
                   )}
                 </button>
               </Magnetic>
-              <p className="text-xs text-gray">Goes straight to my Telegram.</p>
+              <p className="text-xs text-gray">{c.note}</p>
             </div>
             <div aria-live="polite" className="min-h-[24px]">
               <AnimatePresence mode="wait">
                 {status.kind !== 'idle' && (
                   <m.p
-                    key={status.text}
+                    key={statusText}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
                     className={`flex items-start gap-2 text-sm ${status.kind === 'ok' ? 'text-emerald-400' : 'text-[#ff6b6b]'}`}
                   >
                     {status.kind === 'ok' ? <CheckCircle2 size={18} className="shrink-0" /> : <AlertCircle size={18} className="shrink-0" />}
-                    {status.text}
+                    {statusText}
                   </m.p>
                 )}
               </AnimatePresence>

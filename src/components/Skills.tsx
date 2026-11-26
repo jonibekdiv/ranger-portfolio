@@ -3,10 +3,12 @@ import { m } from 'framer-motion'
 import TiltCard from './TiltCard'
 import { techIcons } from './Icons'
 import { skills } from '../data/content'
+import { useI18n } from '../i18n'
 import { ease, gsap } from '../lib/motion'
 
 export default function Skills() {
   const root = useRef<HTMLElement>(null)
+  const s = useI18n().t.skills
 
   // Animated typography: the heading words slide in from opposite sides as you scroll.
   useEffect(() => {
@@ -41,13 +43,13 @@ export default function Skills() {
       <div className="pad-x relative mx-auto max-w-[1440px]">
         <div className="mb-14 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <span className="kicker">My skills</span>
+            <span className="kicker">{s.kicker}</span>
             <h2 id="skills-title" className="h2 mt-5">
-              <span data-skill-l className="block">Technologies</span>
-              <span data-skill-r className="block">I Work <span className="text-neon text-glow">With</span></span>
+              <span data-skill-l className="block">{s.t1}</span>
+              <span data-skill-r className="block">{s.t2} <span className="text-neon text-glow">{s.t2a}</span></span>
             </h2>
           </div>
-          <p className="max-w-[38ch] text-gray">The tools I use every day to design, build and ship fast, animated interfaces.</p>
+          <p className="max-w-[38ch] text-gray">{s.desc}</p>
         </div>
 
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">

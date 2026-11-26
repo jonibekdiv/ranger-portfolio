@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { LazyMotion, MotionConfig } from 'framer-motion'
+import { I18nProvider } from './i18n'
 import Loader from './components/Loader'
 import Cursor from './components/Cursor'
 import Nav from './components/Nav'
@@ -44,6 +45,7 @@ export default function App() {
   }, [ready])
 
   return (
+    <I18nProvider>
     <LazyMotion features={loadFeatures} strict>
     <MotionConfig reducedMotion="user">
       <Loader onDone={onLoaded} />
@@ -60,5 +62,6 @@ export default function App() {
       <Footer />
     </MotionConfig>
     </LazyMotion>
+    </I18nProvider>
   )
 }
